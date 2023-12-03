@@ -188,8 +188,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         return Double.toString(error);
     }
 
-    public void resetIMU() {
-        imu.resetYaw();
+    public void resetIMU() { imu.resetYaw(); }
+    public void resetEncoder() {
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void turn(double angle) {

@@ -41,8 +41,7 @@ public class BlueUSBAuton extends LinearOpMode {
     boolean reachSpot = false;
     boolean startTurning = false;
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         see = false;
         DriveConstants.spikePosition = -1;
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -57,41 +56,28 @@ public class BlueUSBAuton extends LinearOpMode {
         webcam.setPipeline(new SamplePipeline());
 
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
+            public void onOpened() { webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT); }
 
             @Override
-            public void onError(int errorCode)
-            {
-
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
+            public void onError(int errorCode) {}
         });
 
         telemetry.addLine("Waiting for start");
         telemetry.update();
 
-        /*
-         * Wait for the user to press start on the Driver Station
-         */
         waitForStart();
 
-        while (!isStopRequested())
-        {
+        while (!isStopRequested()) {
             telemetry.addData("Spike Position", DriveConstants.spikePosition);
             telemetry.addData("Did is reach the spot", reachSpot);
             if(DriveConstants.spikePosition !=-1) {
+                drive.resetEncoder();
                 if (DriveConstants.spikePosition == 0) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 5) {
-                        double[] output = drive.moveInches(20, 35);
+                    while (timer.seconds() < 5 && !isStopRequested()) {
+                        double[] output = drive.moveInches(10, 30);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -107,8 +93,8 @@ public class BlueUSBAuton extends LinearOpMode {
                     }
                 } else if (DriveConstants.spikePosition == 1) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(27, 27);
+                    while (timer.seconds() < 4 && !isStopRequested()) {
+                        double[] output = drive.moveInches(22, 22);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -124,8 +110,8 @@ public class BlueUSBAuton extends LinearOpMode {
                     }
                 } else if (DriveConstants.spikePosition == 2) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(48, 10);
+                    while (timer.seconds() < 4 && !isStopRequested()) {
+                        double[] output = drive.moveInches(38, 10);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);

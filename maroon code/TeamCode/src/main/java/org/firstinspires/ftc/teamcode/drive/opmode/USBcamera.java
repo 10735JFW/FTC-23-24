@@ -43,35 +43,23 @@ public class USBcamera extends LinearOpMode {
     boolean reachSpot = false;
     boolean startTurning = false;
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         see = false;
         DriveConstants.spikePosition = -1;
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-//        drive.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-
-        // OR...  Do Not Activate the Camera Monitor View
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         webcam.setPipeline(new SamplePipeline());
 
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
+            public void onOpened() { webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT); }
 
             @Override
-            public void onError(int errorCode)
-            {
-
-            }
+            public void onError(int errorCode) {}
         });
 
         telemetry.addLine("Waiting for start");
@@ -87,10 +75,11 @@ public class USBcamera extends LinearOpMode {
             telemetry.addData("Spike Position", DriveConstants.spikePosition);
             telemetry.addData("Did is reach the spot", reachSpot);
             if(DriveConstants.spikePosition !=-1) {
+                drive.resetEncoder();
                 if (DriveConstants.spikePosition == 0) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 5) {
-                        double[] output = drive.moveInches(20, 35);
+                    while (timer.seconds() < 5 && !isStopRequested()) {
+                        double[] output = drive.moveInches(10, 38);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -106,8 +95,8 @@ public class USBcamera extends LinearOpMode {
                     }
                 } else if (DriveConstants.spikePosition == 1) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(27, 27);
+                    while (timer.seconds() < 4 && !isStopRequested()) {
+                        double[] output = drive.moveInches(22, 22);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -123,8 +112,8 @@ public class USBcamera extends LinearOpMode {
                     }
                 } else if (DriveConstants.spikePosition == 2) {
                     ElapsedTime timer = new ElapsedTime();
-                    while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(48, 10);
+                    while (timer.seconds() < 4 && !isStopRequested()) {
+                        double[] output = drive.moveInches(30, 10);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
