@@ -54,12 +54,6 @@ public class BlueUSBAuton extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
-
-        /*
-         * Specify the image processing pipeline we wish to invoke upon receipt
-         * of a frame from the camera. Note that switching pipelines on-the-fly
-         * (while a streaming session is in flight) *IS* supported.
-         */
         webcam.setPipeline(new SamplePipeline());
 
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
@@ -68,22 +62,6 @@ public class BlueUSBAuton extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                /*
-                 * Tell the webcam to start streaming images to us! Note that you must make sure
-                 * the resolution you specify is supported by the camera. If it is not, an exception
-                 * will be thrown.
-                 *
-                 * Keep in mind that the SDK's UVC driver (what OpenCvWebcam uses under the hood) only
-                 * supports streaming from the webcam in the uncompressed YUV image format. This means
-                 * that the maximum resolution you can stream at and still get up to 30FPS is 480p (640x480).
-                 * Streaming at e.g. 720p will limit you to up to 10FPS and so on and so forth.
-                 *
-                 * Also, we specify the rotation that the webcam is used in. This is so that the image
-                 * from the camera sensor can be rotated such that it is always displayed with the image upright.
-                 * For a front facing camera, rotation is defined assuming the user is looking at the screen.
-                 * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
-                 * away from the user.
-                 */
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
@@ -113,7 +91,7 @@ public class BlueUSBAuton extends LinearOpMode {
                 if (DriveConstants.spikePosition == 0) {
                     ElapsedTime timer = new ElapsedTime();
                     while (timer.seconds() < 5) {
-                        double[] output = drive.moveInches(25, 30);
+                        double[] output = drive.moveInches(20, 35);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -147,7 +125,7 @@ public class BlueUSBAuton extends LinearOpMode {
                 } else if (DriveConstants.spikePosition == 2) {
                     ElapsedTime timer = new ElapsedTime();
                     while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(30, 25);
+                        double[] output = drive.moveInches(48, 10);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -163,97 +141,16 @@ public class BlueUSBAuton extends LinearOpMode {
                     }
                 }
             }
-        //            if(DriveConstants.spikePosition !=-1){
-//                if(DriveConstants.spikePosition==0){
-//                    if(!reachSpot){
-//                        reachSpot = drive.moveInches(30);
-//                    }else {
-//                        if(!startTurning){
-//                            startTurning = drive.setAngle(225);
-//                        }else {
-//                            drive.intakePower(0.3);
-//                        }
-//                    }
-//
-//                }else if(DriveConstants.spikePosition==1) {
-//                    if(!reachSpot){
-//                        reachSpot = drive.moveInches(30);
-//                    }else {
-//                        drive.intakePower(0.3);
-//                    }
-//                }
-//                else if(DriveConstants.spikePosition==2) {
-//                    if(!reachSpot){
-//                        reachSpot = drive.moveInches(30);
-//                    }else {
-//                        if(!startTurning){
-//                            startTurning = drive.setAngle(135);
-//                        }else {
-//                            drive.intakePower(0.3);
-//                        }
-//                    }
-//                }
         }
-        /*
-         * Send some stats to the telemetry
-         */
-
-        /*
-         * NOTE: stopping the stream from the camera early (before the end of the OpMode
-         * when it will be automatically stopped for you) *IS* supported. The "if" statement
-         * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
-         */
-//            if(gamepad1.a)
-//            {
-//                webcam.stopStreaming();
-//                //webcam.closeCameraDevice();
-//            }
-//            sleep(100);
-        // }
     }
 
-    /*
-     * An example image processing pipeline to be run upon receipt of each frame from the camera.
-     * Note that the processFrame() method is called serially from the frame worker thread -
-     * that is, a new camera frame will not come in while you're still processing a previous one.
-     * In other words, the processFrame() method will never be called multiple times simultaneously.
-     *
-     * However, the rendering of your processed image to the viewport is done in parallel to the
-     * frame worker thread. That is, the amount of time it takes to render the image to the
-     * viewport does NOT impact the amount of frames per second that your pipeline can process.
-     *
-     * IMPORTANT NOTE: this pipeline is NOT invoked on your OpMode thread. It is invoked on the
-     * frame worker thread. This should not be a problem in the vast majority of cases. However,
-     * if you're doing something weird where you do need it synchronized with your OpMode thread,
-     * then you will need to account for that accordingly.
-     */
     class SamplePipeline extends OpenCvPipeline
     {
         boolean viewportPaused;
 
-        /*
-         * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
-         * highly recommended to declare them here as instance variables and re-use them for
-         * each invocation of processFrame(), rather than declaring them as new local variables
-         * each time through processFrame(). This removes the danger of causing a memory leak
-         * by forgetting to call mat.release(), and it also reduces memory pressure by not
-         * constantly allocating and freeing large chunks of memory.
-         */
-
         @Override
         public Mat processFrame(Mat input)
         {
-            /*
-             * IMPORTANT NOTE: the input Mat that is passed in as a parameter to this method
-             * will only dereference to the same image for the duration of this particular
-             * invocation of this method. That is, if for some reason you'd like to save a copy
-             * of this particular frame for later use, you will need to either clone it or copy
-             * it to another Mat.
-             */
-
-            /*
-             * Draw a simple box around the middle 1/2 of the entire frame
-             */
             if(!see){
                 double[][] pixels = new double[input.rows()][input.cols()];
                 for (int i = 0; i < input.rows(); i++) {
@@ -314,30 +211,12 @@ public class BlueUSBAuton extends LinearOpMode {
                             (double)(position[0] + 32)),
                     new Scalar(0, 255, 0), 4);
 
-            /**
-             * NOTE: to see how to get data from your pipeline to your OpMode as well as how
-             * to change which stage of the pipeline is rendered to the viewport when it is
-             * tapped, please see {@link PipelineStageSwitchingExample}
-             */
-
             return input;
         }
 
         @Override
         public void onViewportTapped()
         {
-            /*
-             * The viewport (if one was specified in the constructor) can also be dynamically "paused"
-             * and "resumed". The primary use case of this is to reduce CPU, memory, and power load
-             * when you need your vision pipeline running, but do not require a live preview on the
-             * robot controller screen. For instance, this could be useful if you wish to see the live
-             * camera preview as you are initializing your robot, but you no longer require the live
-             * preview after you have finished your initialization process; pausing the viewport does
-             * not stop running your pipeline.
-             *
-             * Here we demonstrate dynamically pausing/resuming the viewport when the user taps it
-             */
-
             viewportPaused = !viewportPaused;
 
             if(viewportPaused)
