@@ -123,7 +123,7 @@ public class RedSideNoBackDrop extends LinearOpMode {
                 } else if (DriveConstants.spikePosition == 1) {
                     ElapsedTime timer = new ElapsedTime();
                     while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(25);
+                        double[] output = drive.moveInches(25, 25);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
@@ -152,7 +152,7 @@ public class RedSideNoBackDrop extends LinearOpMode {
                 } else if (DriveConstants.spikePosition == 2) {
                     ElapsedTime timer = new ElapsedTime();
                     while (timer.seconds() < 4) {
-                        double[] output = drive.moveInches(30);
+                        double[] output = drive.moveInches(30, 30);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);

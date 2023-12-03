@@ -249,11 +249,11 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static double DeadWheelencoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
     }
-    public double[] moveInches (double inches) {
+    public double[] moveInches (double inchesLeft, double inchesRight) {
         double inchesL =  encoderTicksToInches(leftRear.getCurrentPosition()) * 1.15;
         double inchesR =  encoderTicksToInches(rightRear.getCurrentPosition()) * 1.15;
-        double errorL = inches - inchesL;
-        double errorR = inches - inchesR;
+        double errorL = inchesLeft - inchesL;
+        double errorR = inchesRight - inchesR;
         leftFront.setPower(Math.signum(errorL)*Math.min(Math.abs(errorL)*DriveConstants.moveKp, 0.3));
         leftRear.setPower(Math.signum(errorL)*Math.min(Math.abs(errorL)*DriveConstants.moveKp, 0.3));
         rightFront.setPower(Math.signum(errorR)*Math.min(Math.abs(errorR)*DriveConstants.moveKp, 0.3));

@@ -109,37 +109,17 @@ public class BlueUSBAuton extends LinearOpMode {
         {
             telemetry.addData("Spike Position", DriveConstants.spikePosition);
             telemetry.addData("Did is reach the spot", reachSpot);
-            if(DriveConstants.spikePosition !=-1){
-                if(DriveConstants.spikePosition == 0){
+            if(DriveConstants.spikePosition !=-1) {
+                if (DriveConstants.spikePosition == 0) {
                     ElapsedTime timer = new ElapsedTime();
-                    while(timer.seconds()<4){
-                        double[] output = drive.moveInches(30);
+                    while (timer.seconds() < 5) {
+                        double[] output = drive.moveInches(25, 30);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
                         telemetry.addData("power left", output[2]);
                         telemetry.addData("power right", output[3]);
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds() < 8) {
-                        double[] output = drive.setAngle(90);
-                        drive.update();
-                        telemetry.addData("Power", output[0]);
-                        telemetry.addData("Error", output[1]);
-                        telemetry.addData("Angle", output[2]);
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds() < 12) {
-                        drive.intakePower(0.2);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds()<13) {
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                        drive.intakePower(1);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
                     }
                     while (!isStopRequested()) {
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
@@ -147,28 +127,16 @@ public class BlueUSBAuton extends LinearOpMode {
                         drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
                         drive.update();
                     }
-                }else if (DriveConstants.spikePosition==1){
+                } else if (DriveConstants.spikePosition == 1) {
                     ElapsedTime timer = new ElapsedTime();
-                    while(timer.seconds()<4){
-                        double[] output = drive.moveInches(25);
+                    while (timer.seconds() < 4) {
+                        double[] output = drive.moveInches(27, 27);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
                         telemetry.addData("power left", output[2]);
                         telemetry.addData("power right", output[3]);
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds() < 8) {
-                        drive.intakePower(0.2);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds()<9) {
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                        drive.intakePower(1);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
                     }
                     while (!isStopRequested()) {
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
@@ -176,40 +144,16 @@ public class BlueUSBAuton extends LinearOpMode {
                         drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
                         drive.update();
                     }
-                }else if(DriveConstants.spikePosition==2) {
+                } else if (DriveConstants.spikePosition == 2) {
                     ElapsedTime timer = new ElapsedTime();
-                    while(timer.seconds()<4){
-                        double[] output = drive.moveInches(30);
+                    while (timer.seconds() < 4) {
+                        double[] output = drive.moveInches(30, 25);
                         drive.update();
                         telemetry.addData("distace traveled left", output[0]);
                         telemetry.addData("distace traveled right", output[1]);
                         telemetry.addData("power left", output[2]);
                         telemetry.addData("power right", output[3]);
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds() < 8) {
-                        double[] output = drive.setAngle(270);
-                        drive.update();
-                        telemetry.addData("Power", output[0]);
-                        telemetry.addData("Error", output[1]);
-                        telemetry.addData("Angle", output[2]);
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds() < 8.5) {
-                        drive.setWeightedDrivePower(new Pose2d(-0.2, 0, 0));
-                        drive.update();
-                    }
-                    while(timer.seconds() < 12) {
-                        drive.intakePower(0.2);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                    }
-                    while(timer.seconds()<13) {
-                        telemetry.addData("Spike Position", DriveConstants.spikePosition);
-                        drive.intakePower(1);
-                        drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                        drive.update();
                     }
                     while (!isStopRequested()) {
                         telemetry.addData("Spike Position", DriveConstants.spikePosition);
@@ -219,7 +163,7 @@ public class BlueUSBAuton extends LinearOpMode {
                     }
                 }
             }
-//            if(DriveConstants.spikePosition !=-1){
+        //            if(DriveConstants.spikePosition !=-1){
 //                if(DriveConstants.spikePosition==0){
 //                    if(!reachSpot){
 //                        reachSpot = drive.moveInches(30);
